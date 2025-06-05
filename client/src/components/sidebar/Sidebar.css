@@ -1,0 +1,63 @@
+/* components/sidebar/Sidebar.css */
+
+.sidebar {
+  height: 100vh;
+  width: 220px;
+  background-color: #2c3e50;
+  padding-top: 20px;
+  color: #ecf0f1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transition: width 0.3s;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.sidebar.collapsed {
+  width: 100px;
+}
+
+.toggle-btn {
+  background: none;
+  color: #ecf0f1;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 10px;
+  margin-bottom: 20px;
+}
+
+.sidebar-title {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.sidebar-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-list li {
+  margin: 0;
+}
+
+.sidebar-list li a,
+.logout-btn {
+  display: block;
+  padding: 12px 20px;
+  color: #ecf0f1;
+  text-decoration: none;
+  transition: background-color 0.3s;
+  background: none;
+  border: none;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+}
+
+.sidebar-list li a:hover,
+.logout-btn:hover {
+  background-color: #34495e;
+}

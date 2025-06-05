@@ -1,0 +1,52 @@
+/* PostCar.css */
+
+.postcar-container {
+  padding: 30px;
+}
+
+.postcar-container h2 {
+  color: #d7e1eb;
+  font-size: 28px;
+  margin-bottom: 25px;
+}
+
+.postcar-buttons {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  color: white;
+}
+
+.action-btn.add {
+  background-color: #27ae60;
+}
+
+.action-btn.add:hover {
+  background-color: #219150;
+}
+
+.action-btn.update {
+  background-color: #2980b9;
+}
+
+.action-btn.update:hover {
+  background-color: #216a94;
+}
+
+.action-btn.delete {
+  background-color: #c0392b;
+}
+
+.action-btn.delete:hover {
+  background-color: #a83224;
+}
