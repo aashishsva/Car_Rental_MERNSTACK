@@ -1,4 +1,3 @@
-// components/sidebar/Sidebar.js
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Sidebar.css';
@@ -23,12 +22,42 @@ const Sidebar = () => {
       {!isCollapsed && <h2 className="sidebar-title">Admin Panel</h2>}
 
       <ul className="sidebar-list">
-        <li><Link to="/admindashboard/postcar">Post Car</Link></li>
-        <li><Link to="/admindashboard/ordercar">Order Car</Link></li>
-        <li><Link to="/admindashboard/locationmaster">Location Master</Link></li>
-        <li><Link to="/admindashboard/categorymaster">Category Master</Link></li>
-        <li><Link to="/admindashboard/vehicleowner">Vehicle Owner</Link></li>
-        <li><button onClick={handleLogout} className="logout-btn">Logout</button></li>
+        <li>
+          <Link to="/admindashboard/postcar">
+            <span className="icon">🚗</span>
+            {!isCollapsed && <span className="label">Post Car</span>}
+          </Link>
+        </li>
+        <li>
+          <Link to="/admindashboard/ordercar">
+            <span className="icon">📦</span>
+            {!isCollapsed && <span className="label">Order Car</span>}
+          </Link>
+        </li>
+        <li>
+          <Link to="/admindashboard/locationmaster">
+            <span className="icon">📍</span>
+            {!isCollapsed && <span className="label">Location Master</span>}
+          </Link>
+        </li>
+        <li>
+          <Link to="/admindashboard/categorymaster">
+            <span className="icon">🗂️</span>
+            {!isCollapsed && <span className="label">Category Master</span>}
+          </Link>
+        </li>
+        <li>
+          <Link to="/admindashboard/vehicleowner">
+            <span className="icon">👤</span>
+            {!isCollapsed && <span className="label">Vehicle Owner</span>}
+          </Link>
+        </li>
+        <li>
+          <button onClick={handleLogout} className="logout-btn">
+            <span className="icon">🔓</span>
+            {!isCollapsed && <span className="label">Logout</span>}
+          </button>
+        </li>
       </ul>
     </div>
   );

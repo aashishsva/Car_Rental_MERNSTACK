@@ -1,5 +1,3 @@
-/* components/sidebar/Sidebar.css */
-
 .sidebar {
   height: 100vh;
   width: 220px;
@@ -15,7 +13,7 @@
 }
 
 .sidebar.collapsed {
-  width: 100px;
+  width: 80px;
 }
 
 .toggle-btn {
@@ -45,19 +43,49 @@
 
 .sidebar-list li a,
 .logout-btn {
-  display: block;
+  display: flex;
+  align-items: center;
   padding: 12px 20px;
   color: #ecf0f1;
   text-decoration: none;
   transition: background-color 0.3s;
   background: none;
   border: none;
-  text-align: left;
   width: 100%;
+  text-align: left;
   cursor: pointer;
 }
 
 .sidebar-list li a:hover,
 .logout-btn:hover {
   background-color: #34495e;
+}
+
+.icon {
+  display: inline-block;
+  width: 24px;
+  font-size: 18px;
+  text-align: center;
+  margin-right: 10px;
+}
+
+.label {
+  vertical-align: middle;
+}
+
+/* collapsed state icon + label control */
+.sidebar.collapsed .icon {
+  margin: 0 auto;
+  display: flex;
+  /* justify-content: center; */
+  width: 100%;
+}
+
+.sidebar.collapsed .label {
+  display: none;
+}
+
+.sidebar.collapsed .logout-btn,
+.sidebar.collapsed a {
+  justify-content: center;
 }

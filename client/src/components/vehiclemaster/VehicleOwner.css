@@ -1,0 +1,32 @@
+/* vehicleowner.css */
+
+.vehicleowner-container {
+  padding: 30px;
+}
+
+.vehicleowner-container h2 {
+  color: #d7e1eb;
+  font-size: 28px;
+  margin-bottom: 25px;
+}
+
+.vehicleowner-buttons {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  color: white;
+}
+
+.action-btn.check {
+  background-color: #27ae60;
+}
