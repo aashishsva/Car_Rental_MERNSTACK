@@ -1,52 +1,37 @@
-/* categorymaster.css */
-
-.categorymaster-container {
-  padding: 30px;
-}
-
-.categorymaster-container h2 {
-  color: #d7e1eb;
-  font-size: 28px;
-  margin-bottom: 25px;
-}
-
-.categorymaster-buttons {
+.category-form {
   display: flex;
-  gap: 20px;
+  gap: 10px;
+  margin-bottom: 20px;
   flex-wrap: wrap;
 }
 
-.action-btn {
-  padding: 12px 24px;
+.category-form input {
+  padding: 10px;
+  flex: 1;
+  min-width: 200px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
   font-size: 16px;
-  font-weight: 500;
-  border: none;
+}
+
+.category-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #fff;
+  color: #333;
   border-radius: 8px;
-  cursor: pointer;
-  transition: 0.3s ease-in-out;
-  color: white;
+  overflow: hidden;
 }
 
-.action-btn.add {
-  background-color: #27ae60;
+.category-table th,
+.category-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
 }
 
-.action-btn.add:hover {
-  background-color: #219150;
-}
-
-.action-btn.update {
+.category-table th {
   background-color: #2980b9;
-}
-
-.action-btn.update:hover {
-  background-color: #216a94;
-}
-
-.action-btn.delete {
-  background-color: #c0392b;
-}
-
-.action-btn.delete:hover {
-  background-color: #a83224;
+  color: #fff;
 }
