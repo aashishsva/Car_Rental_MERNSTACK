@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom"; // <-- Add this line
 import styles from "./Navbar.module.css";
 
 const Navbar = () => {
@@ -7,22 +8,22 @@ const Navbar = () => {
       <div className={styles.logo}>CarRental</div>
       <ul className={styles.navLinks}>
         <li>
-          <button className={styles.btn}>Home</button>
+          <Link to="/" className={styles.btn}>Home</Link>
         </li>
         <li>
-          <button className={styles.btn}>Cars</button>
+          <Link to="/cars" className={styles.btn}>Cars</Link>
         </li>
         <li>
-          <button className={styles.btn}>Order Car</button>
+          <Link to="/order-car" className={styles.btn}>Order Car</Link>
         </li>
         <li>
-          <button className={styles.btn}>User Login</button>
+          <Link to="/login" className={styles.btn}>User Login</Link>
         </li>
         <li>
-          <button className={styles.btn}>User Registration</button>
+          <Link to="/register" className={styles.btn}>User Registration</Link>
         </li>
         <li>
-          <button className={styles.btn}>Admin Login</button>
+          <Link to="/login" className={styles.btn}>Admin Login</Link>
         </li>
       </ul>
     </nav>

@@ -1,9 +1,10 @@
+
 .postcarContainer {
   padding: 30px;
   color: #fff;
-  /* background-color: #1e293b; */
   border-radius: 10px;
   min-height: 100vh;
+  background-color: #0f172a;
 }
 
 .postcarContainer h2 {
@@ -30,7 +31,7 @@
 
 .formGroup label {
   margin-bottom: 5px;
-  color: #d1d5db;
+  color: #ffffff;
   font-weight: 500;
 }
 
@@ -44,6 +45,12 @@
   color: white;
 }
 
+.carForm input[type='file'] {
+  background-color: transparent;
+  color: #d1d5db;
+  padding: 5px;
+}
+
 .actionBtn {
   padding: 10px 20px;
   font-size: 15px;
@@ -53,6 +60,7 @@
   cursor: pointer;
   transition: 0.3s ease-in-out;
   color: white;
+  margin-right: 10px;
 }
 
 .add {
@@ -106,4 +114,11 @@
 
 .carTable tr:hover {
   background-color: #e6f7ff;
+}
+
+.imagePreview {
+  width: 100px;
+  height: auto;
+  margin: 5px 0;
+  border-radius: 5px;
 }
