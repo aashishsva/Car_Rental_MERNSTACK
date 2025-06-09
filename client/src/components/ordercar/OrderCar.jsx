@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./OrderCar.css";
+import styles from "./OrderCar.module.css";
 import Sidebar from "../sidebar/Sidebar";
 import axios from "axios";
 
@@ -76,12 +76,11 @@ const OrderCar = () => {
 
   return (
     <>
-      {/* <Sidebar /> */}
-      <div className="ordercar-container">
+      <div className={styles.ordercarContainer}>
         <h2>Order Car</h2>
 
-        <form className="ordercar-form" onSubmit={handleSubmit}>
-          <div className="form-group">
+        <form className={styles.ordercarForm} onSubmit={handleSubmit}>
+          <div className={styles.formGroup}>
             <label>Select Car</label>
             <select name="carid" value={formData.carid} onChange={handleChange} required>
               <option value="">Select Car</option>
@@ -93,7 +92,7 @@ const OrderCar = () => {
             </select>
           </div>
 
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label>Select Owner</label>
             <select name="ownerid" value={formData.ownerid} onChange={handleChange} required>
               <option value="">Select Owner</option>
@@ -105,39 +104,53 @@ const OrderCar = () => {
             </select>
           </div>
 
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label>Booking Date</label>
             <input type="date" name="bookingdate" value={formData.bookingdate} onChange={handleChange} required />
           </div>
 
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label>Source Location</label>
-            <input type="text" name="sourcelocation" placeholder="Source" value={formData.sourcelocation} onChange={handleChange} required />
+            <input
+              type="text"
+              name="sourcelocation"
+              placeholder="Source"
+              value={formData.sourcelocation}
+              onChange={handleChange}
+              required
+            />
           </div>
 
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label>Destination Location</label>
-            <input type="text" name="destinationlocation" placeholder="Destination" value={formData.destinationlocation} onChange={handleChange} required />
+            <input
+              type="text"
+              name="destinationlocation"
+              placeholder="Destination"
+              value={formData.destinationlocation}
+              onChange={handleChange}
+              required
+            />
           </div>
 
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label>Pickup Time</label>
             <input type="time" name="pickuptime" value={formData.pickuptime} onChange={handleChange} required />
           </div>
 
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label>Drop Time</label>
             <input type="time" name="droptime" value={formData.droptime} onChange={handleChange} required />
           </div>
 
-          <div className="form-group full-width">
-            <button type="submit" className="action-btn add">
+          <div className={`${styles.formGroup} ${styles.fullWidth}`}>
+            <button type="submit" className={`${styles.actionBtn} ${styles.add}`}>
               {editingId ? "Update" : "Add"} Order
             </button>
           </div>
         </form>
 
-        <table className="ordercar-table">
+        <table className={styles.ordercarTable}>
           <thead>
             <tr>
               <th>#</th>
@@ -163,10 +176,10 @@ const OrderCar = () => {
                 <td>{order.pickuptime}</td>
                 <td>{order.droptime}</td>
                 <td>
-                  <button className="action-btn update" onClick={() => handleEdit(order)}>
+                  <button className={`${styles.actionBtn} ${styles.update}`} onClick={() => handleEdit(order)}>
                     Edit
                   </button>
-                  <button className="action-btn delete" onClick={() => handleDelete(order._id)}>
+                  <button className={`${styles.actionBtn} ${styles.delete}`} onClick={() => handleDelete(order._id)}>
                     Delete
                   </button>
                 </td>

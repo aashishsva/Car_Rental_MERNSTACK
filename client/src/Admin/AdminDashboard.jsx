@@ -1,15 +1,13 @@
-// AdminDashboard.js
-import React from 'react';
-import { Outlet } from 'react-router-dom';
-import Sidebar from '../components/sidebar/Sidebar';
-import './AdminDashboard.css';
-import '../components/sidebar/Sidebar.css';
+import React from "react";
+import { Outlet } from "react-router-dom";
+import Sidebar from "../components/sidebar/Sidebar";
+import styles from "./AdminDashboard.module.css";
 
 const AdminDashboard = () => {
   return (
-    <div className="dashboard-container">
+    <div className={styles.dashboardContainer}>
       <Sidebar />
-      <div className="dashboard-content">
+      <div className={styles.dashboardContent}>
         <Outlet />
       </div>
     </div>

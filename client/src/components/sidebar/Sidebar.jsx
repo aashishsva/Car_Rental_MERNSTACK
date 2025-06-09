@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './Sidebar.css';
+import styles from './Sidebar.module.css'; // ✅ Correct import
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -14,48 +14,48 @@ const Sidebar = () => {
   };
 
   return (
-    <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
-      <button className="toggle-btn" onClick={handleToggle}>
+    <div className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ''}`}>
+      <button className={styles.toggleBtn} onClick={handleToggle}>
         {isCollapsed ? '☰' : '✖'}
       </button>
 
-      {!isCollapsed && <h2 className="sidebar-title">Admin Panel</h2>}
+      {!isCollapsed && <h2 className={styles.sidebarTitle}>Admin Panel</h2>}
 
-      <ul className="sidebar-list">
+      <ul className={styles.sidebarList}>
         <li>
-          <Link to="/admindashboard/postcar">
-            <span className="icon">🚗</span>
-            {!isCollapsed && <span className="label">Post Car</span>}
+          <Link to="/admindashboard/postcar" className={styles.sidebarLink}>
+            <span className={styles.icon}>🚗</span>
+            {!isCollapsed && <span className={styles.label}>Post Car</span>}
           </Link>
         </li>
         <li>
-          <Link to="/admindashboard/ordercar">
-            <span className="icon">📦</span>
-            {!isCollapsed && <span className="label">Order Car</span>}
+          <Link to="/admindashboard/ordercar" className={styles.sidebarLink}>
+            <span className={styles.icon}>📦</span>
+            {!isCollapsed && <span className={styles.label}>Order Car</span>}
           </Link>
         </li>
         <li>
-          <Link to="/admindashboard/locationmaster">
-            <span className="icon">📍</span>
-            {!isCollapsed && <span className="label">Location Master</span>}
+          <Link to="/admindashboard/locationmaster" className={styles.sidebarLink}>
+            <span className={styles.icon}>📍</span>
+            {!isCollapsed && <span className={styles.label}>Location Master</span>}
           </Link>
         </li>
         <li>
-          <Link to="/admindashboard/categorymaster">
-            <span className="icon">🗂️</span>
-            {!isCollapsed && <span className="label">Category Master</span>}
+          <Link to="/admindashboard/categorymaster" className={styles.sidebarLink}>
+            <span className={styles.icon}>🗂️</span>
+            {!isCollapsed && <span className={styles.label}>Category Master</span>}
           </Link>
         </li>
         <li>
-          <Link to="/admindashboard/vehicleowner">
-            <span className="icon">👤</span>
-            {!isCollapsed && <span className="label">Vehicle Owner</span>}
+          <Link to="/admindashboard/vehicleowner" className={styles.sidebarLink}>
+            <span className={styles.icon}>👤</span>
+            {!isCollapsed && <span className={styles.label}>Vehicle Owner</span>}
           </Link>
         </li>
         <li>
-          <button onClick={handleLogout} className="logout-btn">
-            <span className="icon">🔓</span>
-            {!isCollapsed && <span className="label">Logout</span>}
+          <button onClick={handleLogout} className={styles.logoutBtn}>
+            <span className={styles.icon}>🔓</span>
+            {!isCollapsed && <span className={styles.label}>Logout</span>}
           </button>
         </li>
       </ul>

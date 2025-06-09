@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import "./LocationMaster.css";
+import styles from "./LocationMaster.module.css";
 import Sidebar from "../sidebar/Sidebar";
 import axios from "axios";
 
 const LocationMaster = () => {
   const [locations, setLocations] = useState([]);
   const [locationName, setLocationName] = useState("");
+  const [editMode, setEditMode] = useState(false);
+  const [editId, setEditId] = useState(null);
 
   useEffect(() => {
     fetchLocations();
@@ -23,22 +25,45 @@ const LocationMaster = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!locationName.trim()) return;
+
     try {
-      await axios.post("http://localhost:5000/locationmaster", { name: locationName });
+      if (editMode) {
+        await axios.put(`http://localhost:5000/locationmaster/${editId}`, { locationname: locationName });
+        setEditMode(false);
+        setEditId(null);
+      } else {
+        await axios.post("http://localhost:5000/locationmaster", { locationname: locationName });
+      }
       setLocationName("");
-      fetchLocations(); // Refresh list
+      fetchLocations();
     } catch (error) {
-      console.error("Error adding location:", error);
+      console.error("Error submitting location:", error);
+    }
+  };
+
+  const handleEdit = (location) => {
+    setLocationName(location.locationname);
+    setEditMode(true);
+    setEditId(location._id);
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this location?")) return;
+    try {
+      await axios.delete(`http://localhost:5000/locationmaster/${id}`);
+      fetchLocations();
+    } catch (error) {
+      console.error("Error deleting location:", error);
     }
   };
 
   return (
     <>
       {/* <Sidebar /> */}
-      <div className="locationmaster-container">
+      <div className={styles.locationmasterContainer}>
         <h2>Location Master</h2>
 
-        <form className="location-form" onSubmit={handleSubmit}>
+        <form className={styles.locationForm} onSubmit={handleSubmit}>
           <input
             type="text"
             placeholder="Enter Location Name"
@@ -46,14 +71,17 @@ const LocationMaster = () => {
             onChange={(e) => setLocationName(e.target.value)}
             required
           />
-          <button type="submit" className="action-btn add">Add Location</button>
+          <button type="submit" className={`${styles.actionBtn} ${styles.add}`}>
+            {editMode ? "Update" : "Add"} Location
+          </button>
         </form>
 
-        <table className="location-table">
+        <table className={styles.locationTable}>
           <thead>
             <tr>
               <th>#</th>
               <th>Location Name</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -61,6 +89,14 @@ const LocationMaster = () => {
               <tr key={loc._id}>
                 <td>{index + 1}</td>
                 <td>{loc.locationname}</td>
+                <td>
+                  <button className={styles.editBtn} onClick={() => handleEdit(loc)}>
+                    Edit
+                  </button>
+                  <button className={styles.deleteBtn} onClick={() => handleDelete(loc._id)}>
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>

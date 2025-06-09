@@ -8,6 +8,8 @@ import LocationMaster from "./components/locationmaster/LocationMaster";
 import VehicleMaster from "./components/vehiclemaster/VehicleOwner";
 import CategoryMaster from "./components/categorymaster/CategoryMaster";
 import ProtectedRoute from "./utils/ProtectedRoute";
+import Userui from "./ui/Navbar";
+import Navbar from "./ui/Navbar";
 
 function App() {
   return (
@@ -30,7 +32,7 @@ function App() {
         </Route>
 
         {/* Unknown path redirect */}
-        <Route path="/" element={<AdminLogin />} />
+        <Route path="/" element={<Navbar />} />
       </Routes>
     </Router>
   );

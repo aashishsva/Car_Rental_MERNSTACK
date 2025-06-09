@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./VehicleOwner.css";
+import styles from "./VehicleOwner.module.css"; // ✅ Correct module import
 import Sidebar from "../sidebar/Sidebar";
 
 const VehicleOwner = () => {
   const [owners, setOwners] = useState([]);
   const [locations, setLocations] = useState([]);
+  const [editId, setEditId] = useState(null);
   const [formData, setFormData] = useState({
     emailid: "",
     password: "",
@@ -43,10 +44,39 @@ const VehicleOwner = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleEdit = (owner) => {
+    setFormData({
+      emailid: owner.emailid,
+      password: "",
+      fullname: owner.fullname,
+      mobileno: owner.mobileno,
+      dateofbirth: owner.dateofbirth?.split("T")[0] || "",
+      locationid: owner.locationid?._id || "",
+      address: owner.address
+    });
+    setEditId(owner._id);
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this owner?")) {
+      try {
+        await axios.delete(`http://localhost:5000/vehicalOwner/${id}`);
+        fetchOwners();
+      } catch (err) {
+        console.error("Error deleting vehicle owner:", err);
+      }
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/vehicalOwner", formData);
+      if (editId) {
+        await axios.put(`http://localhost:5000/vehicalOwner/${editId}`, formData);
+      } else {
+        await axios.post("http://localhost:5000/vehicalOwner", formData);
+      }
+
       setFormData({
         emailid: "",
         password: "",
@@ -56,19 +86,20 @@ const VehicleOwner = () => {
         locationid: "",
         address: ""
       });
+      setEditId(null);
       fetchOwners();
     } catch (err) {
-      console.error("Error adding vehicle owner:", err);
+      console.error("Error submitting vehicle owner:", err);
     }
   };
 
   return (
     <>
       {/* <Sidebar /> */}
-      <div className="vehicleowner-container">
+      <div className={styles.vehicleownerContainer}>
         <h2>Vehicle Owner</h2>
 
-        <form className="vehicleowner-form" onSubmit={handleSubmit}>
+        <form className={styles.vehicleownerForm} onSubmit={handleSubmit}>
           <input type="email" name="emailid" value={formData.emailid} onChange={handleChange} placeholder="Email" required />
           <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" required />
           <input type="text" name="fullname" value={formData.fullname} onChange={handleChange} placeholder="Full Name" required />
@@ -81,10 +112,12 @@ const VehicleOwner = () => {
             ))}
           </select>
           <textarea name="address" value={formData.address} onChange={handleChange} placeholder="Address" required />
-          <button className="action-btn add" type="submit">Add Vehicle Owner</button>
+          <button className={`${styles.actionBtn} ${styles.add}`} type="submit">
+            {editId ? "Update Vehicle Owner" : "Add Vehicle Owner"}
+          </button>
         </form>
 
-        <table className="vehicleowner-table">
+        <table className={styles.vehicleownerTable}>
           <thead>
             <tr>
               <th>#</th>
@@ -92,6 +125,7 @@ const VehicleOwner = () => {
               <th>Email</th>
               <th>Mobile</th>
               <th>Location</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -102,6 +136,10 @@ const VehicleOwner = () => {
                 <td>{owner.emailid}</td>
                 <td>{owner.mobileno}</td>
                 <td>{owner.locationid?.locationname || "N/A"}</td>
+                <td>
+                  <button className={`${styles.actionBtn} ${styles.edit}`} onClick={() => handleEdit(owner)}>Edit</button>
+                  <button className={`${styles.actionBtn} ${styles.delete}`} onClick={() => handleDelete(owner._id)}>Delete</button>
+                </td>
               </tr>
             ))}
           </tbody>
