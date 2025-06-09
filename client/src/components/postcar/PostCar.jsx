@@ -1,12 +1,10 @@
-// PostCar.js
-
 import styles from "./PostCar.module.css";
 import Sidebar from "../sidebar/Sidebar";
 import axios from "axios";
 import { useState, useEffect } from "react";
 
 const PostCar = () => {
-  const [car, setCars] = useState([]);
+  const [cars, setCars] = useState([]);
   const [categories, setCategories] = useState([]);
   const [owners, setOwners] = useState([]);
   const [formData, setFormData] = useState({
@@ -52,7 +50,6 @@ const PostCar = () => {
     try {
       const response = await axios.get("http://localhost:5000/vehicalOwner");
       setOwners(response.data);
-      console.log(response.data)
     } catch (error) {
       console.error("Error fetching owners:", error);
     }
@@ -69,13 +66,18 @@ const PostCar = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       const data = new FormData();
-      Object.keys(formData).forEach((key) => {
-        data.append(key, formData[key]);
+      Object.entries(formData).forEach(([key, value]) => {
+        if (value !== null && value !== "") {
+          data.append(key, value);
+        }
       });
 
-      await axios.post("http://localhost:5000/postcars", data);
+      await axios.post("http://localhost:5000/postcars", data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       fetchCars();
       setFormData({
         catid: "",
@@ -96,79 +98,176 @@ const PostCar = () => {
     }
   };
 
+  // Placeholder edit & delete handlers
+  const handleEdit = (id) => {
+    alert(`Edit feature for ID: ${id} will be added soon.`);
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure to delete this car?")) return;
+
+    try {
+      await axios.delete(`http://localhost:5000/postcars/${id}`);
+      fetchCars();
+    } catch (error) {
+      console.error("Error deleting car:", error);
+    }
+  };
+
   return (
     <div className={styles.postcarContainer}>
-      <Sidebar />
+      {/* <Sidebar /> */}
       <h2>Post a New Car</h2>
-      <form className={styles.carForm} onSubmit={handleSubmit} encType="multipart/form-data">
+      <form
+        className={styles.carForm}
+        onSubmit={handleSubmit}
+        encType="multipart/form-data"
+      >
         <div className={styles.formGroup}>
           <label htmlFor="cartitle">Car Title</label>
-          <input id="cartitle" type="text" name="cartitle" value={formData.cartitle} onChange={handleChange} required />
+          <input
+            id="cartitle"
+            type="text"
+            name="cartitle"
+            value={formData.cartitle}
+            onChange={handleChange}
+            required
+          />
         </div>
 
         <div className={styles.formGroup}>
           <label htmlFor="catid">Category</label>
-          <select id="catid" name="catid" value={formData.catid} onChange={handleChange} required>
+          <select
+            id="catid"
+            name="catid"
+            value={formData.catid}
+            onChange={handleChange}
+            required
+          >
             <option value="">Select Category</option>
             {categories.map((cat) => (
-              <option key={cat._id} value={cat._id}>{cat.catname}</option>
+              <option key={cat._id} value={cat._id}>
+                {cat.catname}
+              </option>
             ))}
           </select>
         </div>
 
         <div className={styles.formGroup}>
           <label htmlFor="vehicleownerid">Vehicle Owner</label>
-          <select id="vehicleownerid" name="vehicleownerid" value={formData.vehicleownerid} onChange={handleChange} required>
+          <select
+            id="vehicleownerid"
+            name="vehicleownerid"
+            value={formData.vehicleownerid}
+            onChange={handleChange}
+            required
+          >
             <option value="">Select Owner</option>
             {owners.map((owner) => (
-              <option key={owner._id} value={owner._id}>{owner.fullname}</option>
+              <option key={owner._id} value={owner._id}>
+                {owner.fullname}
+              </option>
             ))}
           </select>
         </div>
 
         <div className={styles.formGroup}>
           <label htmlFor="shortdescription">Short Description</label>
-          <input id="shortdescription" type="text" name="shortdescription" value={formData.shortdescription} onChange={handleChange} required />
+          <input
+            id="shortdescription"
+            type="text"
+            name="shortdescription"
+            value={formData.shortdescription}
+            onChange={handleChange}
+            required
+          />
         </div>
 
         <div className={styles.formGroup}>
           <label htmlFor="carimage1">Image 1</label>
-          <input id="carimage1" type="file" name="carimage1" onChange={handleChange} />
+          <input
+            id="carimage1"
+            type="file"
+            name="carimage1"
+            onChange={handleChange}
+          />
         </div>
 
         <div className={styles.formGroup}>
           <label htmlFor="carimage2">Image 2</label>
-          <input id="carimage2" type="file" name="carimage2" onChange={handleChange} />
+          <input
+            id="carimage2"
+            type="file"
+            name="carimage2"
+            onChange={handleChange}
+          />
         </div>
 
         <div className={styles.formGroup}>
           <label htmlFor="postdate">Post Date</label>
-          <input id="postdate" type="date" name="postdate" value={formData.postdate} onChange={handleChange} />
+          <input
+            id="postdate"
+            type="date"
+            name="postdate"
+            value={formData.postdate}
+            onChange={handleChange}
+          />
         </div>
 
         <div className={styles.formGroup}>
           <label htmlFor="price">Price</label>
-          <input id="price" type="number" name="price" value={formData.price} onChange={handleChange} required />
+          <input
+            id="price"
+            type="number"
+            name="price"
+            value={formData.price}
+            onChange={handleChange}
+            required
+          />
         </div>
 
         <div className={styles.formGroup}>
           <label htmlFor="variant">Variant</label>
-          <input id="variant" type="text" name="variant" value={formData.variant} onChange={handleChange} />
+          <input
+            id="variant"
+            type="text"
+            name="variant"
+            value={formData.variant}
+            onChange={handleChange}
+          />
         </div>
 
         <div className={styles.formGroup}>
           <label htmlFor="driverstatus">Driver Status</label>
-          <input id="driverstatus" type="text" name="driverstatus" value={formData.driverstatus} onChange={handleChange} />
+          <input
+            id="driverstatus"
+            type="text"
+            name="driverstatus"
+            value={formData.driverstatus}
+            onChange={handleChange}
+          />
         </div>
 
         <div className={styles.formGroup}>
           <label htmlFor="registrationyear">Registration Year</label>
-          <input id="registrationyear" type="number" name="registrationyear" value={formData.registrationyear} onChange={handleChange} />
+          <input
+            id="registrationyear"
+            type="number"
+            name="registrationyear"
+            value={formData.registrationyear}
+            onChange={handleChange}
+          />
         </div>
 
         <div className={styles.formGroup}>
           <label htmlFor="carvehicleno">Vehicle No.</label>
-          <input id="carvehicleno" type="text" name="carvehicleno" value={formData.carvehicleno} onChange={handleChange} />
+          <input
+            id="carvehicleno"
+            type="text"
+            name="carvehicleno"
+            value={formData.carvehicleno}
+            onChange={handleChange}
+          />
         </div>
 
         <button type="submit" className={`${styles.actionBtn} ${styles.add}`}>
@@ -188,15 +287,25 @@ const PostCar = () => {
           </tr>
         </thead>
         <tbody>
-          {car.map((carItem, index) => (
+          {cars.map((carItem, index) => (
             <tr key={carItem._id}>
               <td>{index + 1}</td>
               <td>{carItem.cartitle}</td>
               <td>{carItem.catid?.catname || "N/A"}</td>
-              <td>{carItem.vehicleownerid?.ownername || "N/A"}</td>
+              <td>{carItem.vehicleownerid?.fullname || "N/A"}</td>
               <td>
-                <button className={`${styles.actionBtn} ${styles.update}`}>Edit</button>
-                <button className={`${styles.actionBtn} ${styles.delete}`}>Del</button>
+                <button
+                  className={`${styles.actionBtn} ${styles.update}`}
+                  onClick={() => handleEdit(carItem._id)}
+                >
+                  Edit
+                </button>
+                <button
+                  className={`${styles.actionBtn} ${styles.delete}`}
+                  onClick={() => handleDelete(carItem._id)}
+                >
+                  Del
+                </button>
               </td>
             </tr>
           ))}
