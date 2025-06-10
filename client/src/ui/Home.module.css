@@ -1,54 +1,59 @@
-.home-container {
+.homeContainer {
   padding: 40px;
-  background-color: #f8f9fa;
+  background-color: #eef3f8;
   min-height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.home-title {
+.homeTitle {
   text-align: center;
-  font-size: 2.8rem;
-  margin-bottom: 40px;
-  color: #333;
+  font-size: 3rem;
+  color: #2c3e50;
+  margin-bottom: 50px;
 }
 
-.card-grid {
+.cardGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 35px;
 }
 
-.car-card {
-  background-color: #ffffff;
-  border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+.carCard {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.car-card:hover {
-  transform: translateY(-5px);
+.carCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
 }
 
-.car-card img {
+.carImage {
   width: 100%;
-  height: 200px;
+  height: 220px;
   object-fit: cover;
 }
 
-.car-details {
+.carDetails {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.car-details h2 {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-  color: #2c3e50;
+.carTitle {
+  font-size: 1.6rem;
+  color: #007bff;
+  margin-bottom: 8px;
 }
 
-.car-details p {
-  margin: 6px 0;
+.carDetails p {
   font-size: 1rem;
-  color: #555;
+  color: #444;
+  margin: 4px 0;
 }
 
 .available {
@@ -56,22 +61,24 @@
   font-weight: bold;
 }
 
-.not-available {
+.notAvailable {
   color: red;
   font-weight: bold;
 }
 
-.rent-now-btn {
+.rentNowBtn {
   margin-top: 15px;
+  padding: 12px 30px;
   background-color: #007bff;
-  color: white;
-  padding: 10px 25px;
+  color: #fff;
+  font-weight: bold;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: 0.3s ease;
+  align-self: flex-start;
+  transition: background-color 0.3s ease;
 }
 
-.rent-now-btn:hover {
+.rentNowBtn:hover {
   background-color: #0056b3;
 }

@@ -1,29 +1,50 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import AdminLogin from "./Admin/AdminLogin"
-import AdminDashboard from "./Admin/AdminDashboard"
+import AdminLogin from "./Admin/AdminLogin";
+import AdminDashboard from "./Admin/AdminDashboard";
 
-import PostCar from "./components/postcar/PostCar"
+import PostCar from "./components/postcar/PostCar";
 import OrderCar from "./components/ordercar/OrderCar";
 import LocationMaster from "./components/locationmaster/LocationMaster";
 import VehicleMaster from "./components/vehiclemaster/VehicleOwner";
 import CategoryMaster from "./components/categorymaster/CategoryMaster";
 import ProtectedRoute from "./utils/ProtectedRoute";
-import Userui from "./ui/Navbar";
 import Navbar from "./ui/Navbar";
 import Home from "./ui/Home";
+
+import UserRegister from "./User/UserRegister";
+import UserLogin from "./User/UserLogin";
+import UserDashboard from "./User/UserDashboard"; // 🟢 Don't forget this import
 
 function App() {
   return (
     <Router>
-      <Routes>
-        {/* Public Route */}
-        <Route path="/login" element={<AdminLogin />} />
+      <Navbar />
 
-        {/* Protected Routes */}
-        <Route path="/admindashboard" element={
-          <ProtectedRoute> 
-            <AdminDashboard /> 
-            </ProtectedRoute>}
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<AdminLogin />} />
+        <Route path="/register" element={<UserRegister />} />
+        <Route path="/userlogin" element={<UserLogin />} />
+
+        {/* ✅ Move this inside Routes block */}
+        <Route
+          path="/userdashboard"
+          element={
+            <ProtectedRoute>
+              <UserDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Admin Protected Routes */}
+        <Route
+          path="/admindashboard"
+          element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
         >
           <Route path="postcar" element={<PostCar />} />
           <Route path="ordercar" element={<OrderCar />} />
@@ -31,12 +52,9 @@ function App() {
           <Route path="categorymaster" element={<CategoryMaster />} />
           <Route path="vehicleowner" element={<VehicleMaster />} />
         </Route>
-
-        {/* Unknown path redirect */}
-        <Route path="/" element={<Home />} />
       </Routes>
     </Router>
   );
 }
 
-export default App
+export default App;

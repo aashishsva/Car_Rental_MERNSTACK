@@ -13,6 +13,8 @@ const categoryMasterController = require('./controller/categoryMasterController'
 const locationMasterController = require('./controller/locationMasterController');
 const loginController = require('./controller/adminloginController');
 const registrationController = require('./controller/adminregistrationController');
+const userRegistrationController = require('./controller/userregistrationController')
+const userLoginController = require('./controller/userloginController')
 
 const upload = require('./middleware/upload'); // multer middleware
 
@@ -23,7 +25,7 @@ app.use(cors());
 app.use(express.json());
 
 // Static folder for uploaded images
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'upload')));
 
 mongoose.connect(MONGO_URI)
     .then(() => console.log('MongoDB connected'))
@@ -88,14 +90,24 @@ app.post('/review', reviewController.createreview);
 app.put('/review/:id', reviewController.updatereview);
 app.delete('/review/:id', reviewController.deletereview);
 
-// Registration routes
+// Admin Registration routes
 app.get('/adminregister', registrationController.getAllAdmin);
 app.post('/adminregister', registrationController.registerAdmin);
 app.put('/adminregister/:id', registrationController.updateAdmin);
 app.delete('/adminregister/:id', registrationController.deleteAdmin);
 
-// Login route
+// Admin Login route
 app.post('/adminlogin', loginController);
+
+
+//User Registration routes
+app.get('/userregister', userRegistrationController.getAllUsers);
+app.post('/userregister', userRegistrationController.registerUser);
+app.put('/userregister/:id', userRegistrationController.updateUser);
+app.delete('/userregister/:id', userRegistrationController.deleteUser);
+
+//User Login routes
+app.post('/userlogin', userLoginController)
 
 const PORT = 5000;
 app.listen(PORT, () => {

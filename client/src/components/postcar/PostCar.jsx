@@ -7,6 +7,7 @@ const PostCar = () => {
   const [cars, setCars] = useState([]);
   const [categories, setCategories] = useState([]);
   const [owners, setOwners] = useState([]);
+  const [editingCarId, setEditingCarId] = useState(null);
   const [formData, setFormData] = useState({
     catid: "",
     vehicleownerid: "",
@@ -64,43 +65,78 @@ const PostCar = () => {
     }
   };
 
+  const resetForm = () => {
+    setFormData({
+      catid: "",
+      vehicleownerid: "",
+      cartitle: "",
+      shortdescription: "",
+      carimage1: null,
+      carimage2: null,
+      postdate: "",
+      price: "",
+      variant: "",
+      driverstatus: "",
+      registrationyear: "",
+      carvehicleno: "",
+    });
+    setEditingCarId(null);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const data = new FormData();
       Object.entries(formData).forEach(([key, value]) => {
-        if (value !== null && value !== "") {
+        // Append only if value exists (including files)
+        if (
+          value !== null &&
+          value !== "" &&
+          // For files, append only if File object (not string or null)
+          (key === "carimage1" || key === "carimage2"
+            ? value instanceof File
+            : true)
+        ) {
           data.append(key, value);
         }
       });
 
-      await axios.post("http://localhost:5000/postcars", data, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      if (editingCarId) {
+        // Edit mode: PUT request to update
+        await axios.put(`http://localhost:5000/postcars/${editingCarId}`, data, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+      } else {
+        // Add mode: POST request to add new car
+        await axios.post("http://localhost:5000/postcars", data, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+      }
+
       fetchCars();
-      setFormData({
-        catid: "",
-        vehicleownerid: "",
-        cartitle: "",
-        shortdescription: "",
-        carimage1: null,
-        carimage2: null,
-        postdate: "",
-        price: "",
-        variant: "",
-        driverstatus: "",
-        registrationyear: "",
-        carvehicleno: "",
-      });
+      resetForm();
     } catch (error) {
-      console.error("Error adding car:", error);
+      console.error(editingCarId ? "Error updating car:" : "Error adding car:", error);
     }
   };
 
-  // Placeholder edit & delete handlers
-  const handleEdit = (id) => {
-    alert(`Edit feature for ID: ${id} will be added soon.`);
+  const handleEdit = (car) => {
+    setEditingCarId(car._id);
+    setFormData({
+      catid: car.catid?._id || "",
+      vehicleownerid: car.vehicleownerid?._id || "",
+      cartitle: car.cartitle || "",
+      shortdescription: car.shortdescription || "",
+      carimage1: null, // Reset file inputs when editing (user can choose to upload new images)
+      carimage2: null,
+      postdate: car.postdate ? car.postdate.split("T")[0] : "", // Format date to yyyy-mm-dd
+      price: car.price || "",
+      variant: car.variant || "",
+      driverstatus: car.driverstatus || "",
+      registrationyear: car.registrationyear || "",
+      carvehicleno: car.carvehicleno || "",
+    });
   };
 
   const handleDelete = async (id) => {
@@ -114,10 +150,14 @@ const PostCar = () => {
     }
   };
 
+  const handleCancelEdit = () => {
+    resetForm();
+  };
+
   return (
     <div className={styles.postcarContainer}>
       {/* <Sidebar /> */}
-      <h2>Post a New Car</h2>
+      <h2>{editingCarId ? "Edit Car" : "Post a New Car"}</h2>
       <form
         className={styles.carForm}
         onSubmit={handleSubmit}
@@ -184,22 +224,24 @@ const PostCar = () => {
         </div>
 
         <div className={styles.formGroup}>
-          <label htmlFor="carimage1">Image 1</label>
+          <label htmlFor="carimage1">Image 1 {editingCarId ? "(Leave empty to keep current)" : ""}</label>
           <input
             id="carimage1"
             type="file"
             name="carimage1"
             onChange={handleChange}
+            accept="image/*"
           />
         </div>
 
         <div className={styles.formGroup}>
-          <label htmlFor="carimage2">Image 2</label>
+          <label htmlFor="carimage2">Image 2 {editingCarId ? "(Leave empty to keep current)" : ""}</label>
           <input
             id="carimage2"
             type="file"
             name="carimage2"
             onChange={handleChange}
+            accept="image/*"
           />
         </div>
 
@@ -270,9 +312,26 @@ const PostCar = () => {
           />
         </div>
 
-        <button type="submit" className={`${styles.actionBtn} ${styles.add}`}>
-          Add Car
-        </button>
+        <div>
+          <button
+            type="submit"
+            className={`${styles.actionBtn} ${
+              editingCarId ? styles.update : styles.add
+            }`}
+          >
+            {editingCarId ? "Update Car" : "Add Car"}
+          </button>
+          {editingCarId && (
+            <button
+              type="button"
+              className={`${styles.actionBtn} ${styles.cancel}`}
+              onClick={handleCancelEdit}
+              style={{ marginLeft: "10px" }}
+            >
+              Cancel
+            </button>
+          )}
+        </div>
       </form>
 
       <h2>Car Database</h2>
@@ -296,7 +355,7 @@ const PostCar = () => {
               <td>
                 <button
                   className={`${styles.actionBtn} ${styles.update}`}
-                  onClick={() => handleEdit(carItem._id)}
+                  onClick={() => handleEdit(carItem)}
                 >
                   Edit
                 </button>

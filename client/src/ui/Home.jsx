@@ -3,7 +3,6 @@ import axios from "axios";
 import Navbar from "../ui/Navbar";
 import styles from "./Home.module.css";
 
-
 const Home = () => {
   const [cars, setCars] = useState([]);
 
@@ -11,6 +10,7 @@ const Home = () => {
     const fetchCars = async () => {
       try {
         const response = await axios.get("http://localhost:5000/postcars");
+        console.log(response.data);
         setCars(response.data);
       } catch (error) {
         console.error("Error fetching cars:", error);
@@ -21,25 +21,35 @@ const Home = () => {
 
   return (
     <>
-      <Navbar />
-      <div className="home-container">
-        <h1 className="home-title">Available Cars</h1>
-        <div className="card-grid">
+      {/* <Navbar /> */}
+      <div className={styles.homeContainer}>
+        <h1 className={styles.homeTitle}>Available Cars for Rent</h1>
+        <div className={styles.cardGrid}>
           {cars.map((car) => (
-            <div className="car-card" key={car._id}>
-              <img src={car.carimage1} alt={car.cartitle} />
-              <div className="car-details">
-                <h2>{car.cartitle}</h2>
-                <p><strong>Owner:</strong> {car.vehicleownerid?.ownername || "N/A"}</p>
-                <p><strong>Price:</strong> ₹{car.price} / day</p>
-                <p><strong>Model No:</strong> {car.variant}</p>
+            <div className={styles.carCard} key={car._id}>
+              <img
+                src={`http://localhost:5000/uploads/${car.carimage1}`}
+                alt={car.cartitle}
+                className={styles.carImage}
+              />
+              <div className={styles.carDetails}>
+                <h2 className={styles.carTitle}>{car.cartitle}</h2>
+                <p><strong>Owner:</strong> {car.vehicleownerid?.fullname || "N/A"}</p>
+                <p><strong>Rental Price:</strong> ₹{car.price} / day</p>
+                <p><strong>Model Variant:</strong> {car.variant}</p>
                 <p>
                   <strong>Driver:</strong>{" "}
-                  <span className={car.driverstatus === "yes" ? "available" : "not-available"}>
+                  <span
+                    className={
+                      car.driverstatus === "yes"
+                        ? styles.available
+                        : styles.notAvailable
+                    }
+                  >
                     {car.driverstatus === "yes" ? "Available" : "Not Available"}
                   </span>
                 </p>
-                <button className="rent-now-btn">Rent Now</button>
+                <button className={styles.rentNowBtn}>Rent Now</button>
               </div>
             </div>
           ))}
