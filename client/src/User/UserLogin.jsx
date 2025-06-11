@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";  // <-- import useNavigate
+import { useNavigate } from "react-router-dom";  
 import styles from "./UserLogin.module.css";
 
 const UserLogin = () => {
-  const navigate = useNavigate();  // <-- navigate hook initialize
+  const navigate = useNavigate();  
 
   const [formData, setFormData] = useState({
     emailid: "",

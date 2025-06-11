@@ -1,24 +1,37 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import Navbar from "./ui/Navbar";
+import Home from "./ui/Home";
 import AdminLogin from "./Admin/AdminLogin";
+import UserRegister from "./User/UserRegister";
+import UserLogin from "./User/UserLogin";
+import UserDashboard from "./User/UserDashboard";
 import AdminDashboard from "./Admin/AdminDashboard";
 
 import PostCar from "./components/postcar/PostCar";
 import OrderCar from "./components/ordercar/OrderCar";
 import LocationMaster from "./components/locationmaster/LocationMaster";
-import VehicleMaster from "./components/vehiclemaster/VehicleOwner";
 import CategoryMaster from "./components/categorymaster/CategoryMaster";
+import VehicleMaster from "./components/vehiclemaster/VehicleOwner";
 import ProtectedRoute from "./utils/ProtectedRoute";
-import Navbar from "./ui/Navbar";
-import Home from "./ui/Home";
 
-import UserRegister from "./User/UserRegister";
-import UserLogin from "./User/UserLogin";
-import UserDashboard from "./User/UserDashboard"; // 🟢 Don't forget this import
+// ✅ Yeh inner component hai jo Router ke andar chalega
+const AppContent = () => {
+  const location = useLocation();
 
-function App() {
+  const hideNavbarPaths = [
+    "/admindashboard",
+    "/admindashboard/postcar",
+    "/admindashboard/ordercar",
+    "/admindashboard/locationmaster",
+    "/admindashboard/categorymaster",
+    "/admindashboard/vehicleowner",
+  ];
+
+  const shouldShowNavbar = !hideNavbarPaths.includes(location.pathname);
+
   return (
-    <Router>
-      <Navbar />
+    <>
+      {shouldShowNavbar && <Navbar />}
 
       <Routes>
         {/* Public Routes */}
@@ -27,7 +40,7 @@ function App() {
         <Route path="/register" element={<UserRegister />} />
         <Route path="/userlogin" element={<UserLogin />} />
 
-        {/* ✅ Move this inside Routes block */}
+        {/* User Dashboard */}
         <Route
           path="/userdashboard"
           element={
@@ -37,7 +50,7 @@ function App() {
           }
         />
 
-        {/* Admin Protected Routes */}
+        {/* Admin Dashboard with Sidebar */}
         <Route
           path="/admindashboard"
           element={
@@ -53,6 +66,14 @@ function App() {
           <Route path="vehicleowner" element={<VehicleMaster />} />
         </Route>
       </Routes>
+    </>
+  );
+};
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }

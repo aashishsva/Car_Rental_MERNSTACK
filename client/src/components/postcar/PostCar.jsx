@@ -1,5 +1,5 @@
 import styles from "./PostCar.module.css";
-import Sidebar from "../sidebar/Sidebar";
+// import Sidebar from "../sidebar/Sidebar";
 import axios from "axios";
 import { useState, useEffect } from "react";
 
@@ -8,6 +8,9 @@ const PostCar = () => {
   const [categories, setCategories] = useState([]);
   const [owners, setOwners] = useState([]);
   const [editingCarId, setEditingCarId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1); // 👈 Pagination
+  const itemsPerPage = 5; // 👈 How many items per page
+
   const [formData, setFormData] = useState({
     catid: "",
     vehicleownerid: "",
@@ -89,11 +92,9 @@ const PostCar = () => {
     try {
       const data = new FormData();
       Object.entries(formData).forEach(([key, value]) => {
-        // Append only if value exists (including files)
         if (
           value !== null &&
           value !== "" &&
-          // For files, append only if File object (not string or null)
           (key === "carimage1" || key === "carimage2"
             ? value instanceof File
             : true)
@@ -104,9 +105,13 @@ const PostCar = () => {
 
       if (editingCarId) {
         // Edit mode: PUT request to update
-        await axios.put(`http://localhost:5000/postcars/${editingCarId}`, data, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+        await axios.put(
+          `http://localhost:5000/postcars/${editingCarId}`,
+          data,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
       } else {
         // Add mode: POST request to add new car
         await axios.post("http://localhost:5000/postcars", data, {
@@ -117,26 +122,72 @@ const PostCar = () => {
       fetchCars();
       resetForm();
     } catch (error) {
-      console.error(editingCarId ? "Error updating car:" : "Error adding car:", error);
+      console.error(
+        editingCarId ? "Error updating car:" : "Error adding car:",
+        error
+      );
     }
   };
 
   const handleEdit = (car) => {
     setEditingCarId(car._id);
-    setFormData({
-      catid: car.catid?._id || "",
-      vehicleownerid: car.vehicleownerid?._id || "",
-      cartitle: car.cartitle || "",
-      shortdescription: car.shortdescription || "",
-      carimage1: null, // Reset file inputs when editing (user can choose to upload new images)
+
+    const form = {
+      catid: "",
+      vehicleownerid: "",
+      cartitle: "",
+      shortdescription: "",
+      carimage1: null,
       carimage2: null,
-      postdate: car.postdate ? car.postdate.split("T")[0] : "", // Format date to yyyy-mm-dd
-      price: car.price || "",
-      variant: car.variant || "",
-      driverstatus: car.driverstatus || "",
-      registrationyear: car.registrationyear || "",
-      carvehicleno: car.carvehicleno || "",
-    });
+      postdate: "",
+      price: "",
+      variant: "",
+      driverstatus: "",
+      registrationyear: "",
+      carvehicleno: "",
+    };
+
+    if (car.catid && car.catid._id) {
+      form.catid = car.catid._id;
+    }
+
+    if (car.vehicleownerid && car.vehicleownerid._id) {
+      form.vehicleownerid = car.vehicleownerid._id;
+    }
+
+    if (car.cartitle) {
+      form.cartitle = car.cartitle;
+    }
+
+    if (car.shortdescription) {
+      form.shortdescription = car.shortdescription;
+    }
+
+    if (car.postdate) {
+      form.postdate = car.postdate.split("T")[0];
+    }
+
+    if (car.price) {
+      form.price = car.price;
+    }
+
+    if (car.variant) {
+      form.variant = car.variant;
+    }
+
+    if (car.driverstatus) {
+      form.driverstatus = car.driverstatus;
+    }
+
+    if (car.registrationyear) {
+      form.registrationyear = car.registrationyear;
+    }
+
+    if (car.carvehicleno) {
+      form.carvehicleno = car.carvehicleno;
+    }
+
+    setFormData(form);
   };
 
   const handleDelete = async (id) => {
@@ -153,6 +204,7 @@ const PostCar = () => {
   const handleCancelEdit = () => {
     resetForm();
   };
+
 
   return (
     <div className={styles.postcarContainer}>
@@ -224,7 +276,9 @@ const PostCar = () => {
         </div>
 
         <div className={styles.formGroup}>
-          <label htmlFor="carimage1">Image 1 {editingCarId ? "(Leave empty to keep current)" : ""}</label>
+          <label htmlFor="carimage1">
+            Image 1 {editingCarId ? "(Leave empty to keep current)" : ""}
+          </label>
           <input
             id="carimage1"
             type="file"
@@ -235,7 +289,9 @@ const PostCar = () => {
         </div>
 
         <div className={styles.formGroup}>
-          <label htmlFor="carimage2">Image 2 {editingCarId ? "(Leave empty to keep current)" : ""}</label>
+          <label htmlFor="carimage2">
+            Image 2 {editingCarId ? "(Leave empty to keep current)" : ""}
+          </label>
           <input
             id="carimage2"
             type="file"
@@ -346,9 +402,9 @@ const PostCar = () => {
           </tr>
         </thead>
         <tbody>
-          {cars.map((carItem, index) => (
+          {currentCars.map((carItem, index) => (
             <tr key={carItem._id}>
-              <td>{index + 1}</td>
+              <td>{indexOfFirstItem + index + 1}</td>
               <td>{carItem.cartitle}</td>
               <td>{carItem.catid?.catname || "N/A"}</td>
               <td>{carItem.vehicleownerid?.fullname || "N/A"}</td>
@@ -370,6 +426,7 @@ const PostCar = () => {
           ))}
         </tbody>
       </table>
+            
     </div>
   );
 };

@@ -5,6 +5,9 @@ import axios from "axios";
 
 const OrderCar = () => {
   const [orders, setOrders] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1); // 👈 pagination
+  const itemsPerPage = 5;
+
   const [formData, setFormData] = useState({
     carid: "",
     ownerid: "",
@@ -73,6 +76,12 @@ const OrderCar = () => {
     await axios.delete(`http://localhost:5000/ordercar/${id}`);
     fetchOrders();
   };
+
+ // 👉 Pagination logic
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentOrders = orders.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(orders.length / itemsPerPage);
 
   return (
     <>
